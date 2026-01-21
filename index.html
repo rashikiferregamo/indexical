@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>so indexical</title>
+<title>so indexicall</title>
 <style>
   html, body {
     margin: 0;
     padding: 0;
     background: #000;
     height: 100%;
-    overflow-y: scroll;
+    overflow: hidden; /* hide native scrollbars */
     cursor: pointer; /* hint user to click for audio */
   }
 
+  /* Media wall container */
   #media-wall {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -89,18 +90,18 @@
 </div>
 
 <script>
-  // Play drone audio on first click with safe volume
+  // Play drone audio on first click
   document.addEventListener('click', function playDrone() {
     const audio = document.getElementById('drone');
-    audio.volume = 0.1; // 10% volume
+    audio.volume = 0.1; // safe low volume
     audio.play().catch(err => console.log('Audio play blocked:', err));
     document.removeEventListener('click', playDrone);
   });
 
-  // Clone media to create "infinite" wall
+  // Clone media to make infinite wall
   const wall = document.getElementById('media-wall');
   const originals = [...wall.children];
-  const repeats = 20; // adjust for more repetition
+  const repeats = 20; // number of times to clone
   for (let i = 0; i < repeats; i++) {
     originals.forEach(el => {
       const clone = el.cloneNode(true);
@@ -108,19 +109,20 @@
     });
   }
 
-  // AUTO-SCROLL
-  let scrollPos = 0;
-  const scrollSpeed = 0.5; // pixels per frame, adjust for faster/slower
-  function autoScroll() {
-    scrollPos += scrollSpeed;
-    window.scrollTo(0, scrollPos);
-    // Loop back to top if bottom reached
-    if (scrollPos + window.innerHeight >= document.body.scrollHeight) {
-      scrollPos = 0;
+  // Auto-scroll using transform
+  let offset = 0;
+  const speed = 0.5; // pixels per frame
+
+  function scrollWall() {
+    offset += speed;
+    if (offset > wall.scrollHeight / 2) { 
+      // reset offset when half the wall has scrolled
+      offset = 0;
     }
-    requestAnimationFrame(autoScroll);
+    wall.style.transform = `translateY(-${offset}px)`;
+    requestAnimationFrame(scrollWall);
   }
-  autoScroll();
+  scrollWall();
 </script>
 
 </body>
