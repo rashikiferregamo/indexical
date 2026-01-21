@@ -7,35 +7,43 @@
     body {
       margin: 0;
       background: #000;
-      font-family: sans-serif;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 8px;
       padding: 8px;
     }
 
     img, video {
-      width: 300px;
-      height: 300px;
+      width: 100%;
+      height: 250px;
       object-fit: cover;
       border-radius: 8px;
     }
 
     video {
-      autoplay;
-      muted;
-      loop;
-      playsinline;
+      autoplay: true;
+      muted: true;
+      loop: true;
+      playsinline: true;
+    }
+
+    /* Audio hidden */
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
+<img src="media/IMG_3581.JPEG">
+<img src="media/IMG_3582.JPEG">
+  
+  <!-- Looping audio drone -->
+  <audio src="media/drone.mp3" autoplay loop></audio>
 
-  <!-- Add your images -->
+  <!-- MEDIA WALL -->
+  <!-- Add your images and videos here -->
   <img src="media/photo1.jpg">
   <img src="media/photo2.jpg">
-
-  <!-- Add your videos -->
   <video src="media/video1.mp4"></video>
   <video src="media/video2.mp4"></video>
 
