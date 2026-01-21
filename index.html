@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Infinite Media Wall</title>
+<title>Infinite Auto-Scrolling Media Wall</title>
 <style>
-  /* Make the page fill the viewport */
   html, body {
     margin: 0;
     padding: 0;
     background: #000;
-    overflow-y: scroll;
     height: 100%;
+    overflow-y: scroll;
     cursor: pointer; /* hint user to click for audio */
   }
 
-  /* Container for all media */
   #media-wall {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -23,7 +21,6 @@
     width: 100%;
   }
 
-  /* Media styling */
   img, video {
     width: 100%;
     height: 100%;
@@ -39,7 +36,6 @@
     playsinline: true;
   }
 
-  /* Hide audio element */
   audio {
     display: none;
   }
@@ -50,9 +46,9 @@
 <!-- Drone audio -->
 <audio id="drone" src="media/IMG_3586.wav" loop></audio>
 
-<!-- Media wall container -->
+<!-- Media wall -->
 <div id="media-wall">
-  <!-- Your original 15 files -->
+  <!-- Your original media -->
   <img src="media/IMG_3581.JPEG">
   <img src="media/IMG_3582.JPEG">
   <img src="media/IMG_3583.JPEG">
@@ -93,19 +89,18 @@
 </div>
 
 <script>
-  // Play audio drone on first click, volume lowered
+  // Play drone audio on first click with safe volume
   document.addEventListener('click', function playDrone() {
     const audio = document.getElementById('drone');
-    audio.volume = 0.1; // adjust volume (10%)
+    audio.volume = 0.1; // 10% volume
     audio.play().catch(err => console.log('Audio play blocked:', err));
     document.removeEventListener('click', playDrone);
   });
 
-  // Infinite wall cloning
+  // Clone media to create "infinite" wall
   const wall = document.getElementById('media-wall');
   const originals = [...wall.children];
-  const repeats = 20; // repeat count
-
+  const repeats = 20; // adjust for more repetition
   for (let i = 0; i < repeats; i++) {
     originals.forEach(el => {
       const clone = el.cloneNode(true);
@@ -113,12 +108,13 @@
     });
   }
 
-  // Auto-scroll effect
+  // AUTO-SCROLL
   let scrollPos = 0;
+  const scrollSpeed = 0.5; // pixels per frame, adjust for faster/slower
   function autoScroll() {
-    scrollPos += 0.5; // scroll speed
+    scrollPos += scrollSpeed;
     window.scrollTo(0, scrollPos);
-    // loop back to top
+    // Loop back to top if bottom reached
     if (scrollPos + window.innerHeight >= document.body.scrollHeight) {
       scrollPos = 0;
     }
@@ -126,5 +122,6 @@
   }
   autoScroll();
 </script>
+
 </body>
 </html>
