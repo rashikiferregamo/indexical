@@ -42,7 +42,7 @@
   </style>
 </head>
 <body>
-  <audio src="media/IMG_3586.wav" autoplay loop></audio>
+  <audio id="drone" src="media/IMG_3586.wav" loop></audio>
 <img src="media/IMG_3581.JPEG">
 <img src="media/IMG_3582.JPEG">
 <img src="media/IMG_3583.JPEG">
@@ -80,7 +80,13 @@
 
 <img src="media/IMG_3608.JPEG">
 <img src="media/IMG_3609.JPEG">
-  
+  <script>
+  document.addEventListener('click', function playDrone() {
+    const audio = document.getElementById('drone');
+    audio.play().catch(err => console.log('Audio play blocked:', err));
+    document.removeEventListener('click', playDrone);
+  });
+</script>
 
 </body>
 </html>
