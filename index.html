@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-  img, video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-</style>
   <meta charset="UTF-8">
-  <title>Media Wall</title>
+  <title>Infinite Media Wall</title>
   <style>
     body {
       margin: 0;
@@ -19,6 +11,8 @@
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 8px;
       padding: 8px;
+      overflow-y: scroll;
+      cursor: pointer; /* hints user to click to start audio */
     }
 
     img, video {
@@ -26,6 +20,7 @@
       height: 250px;
       object-fit: cover;
       border-radius: 8px;
+      display: block;
     }
 
     video {
@@ -35,58 +30,89 @@
       playsinline: true;
     }
 
-    /* Audio hidden */
     audio {
       display: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- Drone audio -->
   <audio id="drone" src="media/IMG_3586.wav" loop></audio>
-<img src="media/IMG_3581.JPEG">
-<img src="media/IMG_3582.JPEG">
-<img src="media/IMG_3583.JPEG">
-<img src="media/IMG_3584.JPEG">
-<img src="media/IMG_3585.JPEG">
-<img src="media/IMG_3586.JPEG">
-<img src="media/IMG_3587.JPEG">
 
-<video src="media/IMG_3588.MP4" autoplay loop muted playsinline></video>
-<video src="media/IMG_3589.MP4" autoplay loop muted playsinline></video>
-<video src="media/IMG_3590.MP4" autoplay loop muted playsinline></video>
+  <!-- MEDIA WALL -->
+  <div id="media-wall">
+    <img src="media/IMG_3581.JPEG">
+    <img src="media/IMG_3582.JPEG">
+    <img src="media/IMG_3583.JPEG">
+    <img src="media/IMG_3584.JPEG">
+    <img src="media/IMG_3585.JPEG">
+    <img src="media/IMG_3586.JPEG">
+    <img src="media/IMG_3587.JPEG">
 
-<img src="media/IMG_3591.JPEG">
-<img src="media/IMG_3592.JPEG">
-<img src="media/IMG_3593.JPEG">
-<img src="media/IMG_3594.JPEG">
-<img src="media/IMG_3595.JPEG">
-<img src="media/IMG_3596.JPEG">
-<img src="media/IMG_3597.JPEG">
-<img src="media/IMG_3598.JPEG">
+    <video src="media/IMG_3588.MP4"></video>
+    <video src="media/IMG_3589.MP4"></video>
+    <video src="media/IMG_3590.MP4"></video>
 
-<video src="media/IMG_3599.MP4" autoplay loop muted playsinline></video>
-<video src="media/IMG_3600.MP4" autoplay loop muted playsinline></video>
+    <img src="media/IMG_3591.JPEG">
+    <img src="media/IMG_3592.JPEG">
+    <img src="media/IMG_3593.JPEG">
+    <img src="media/IMG_3594.JPEG">
+    <img src="media/IMG_3595.JPEG">
+    <img src="media/IMG_3596.JPEG">
+    <img src="media/IMG_3597.JPEG">
+    <img src="media/IMG_3598.JPEG">
 
-<img src="media/IMG_3601.JPEG">
-<img src="media/IMG_3602.JPEG">
-<img src="media/IMG_3603.JPEG">
+    <video src="media/IMG_3599.MP4"></video>
+    <video src="media/IMG_3600.MP4"></video>
 
-<video src="media/IMG_3604.MP4" autoplay loop muted playsinline></video>
-<video src="media/IMG_3605.MP4" autoplay loop muted playsinline></video>
+    <img src="media/IMG_3601.JPEG">
+    <img src="media/IMG_3602.JPEG">
+    <img src="media/IMG_3603.JPEG">
 
-<img src="media/IMG_3606.JPEG">
+    <video src="media/IMG_3604.MP4"></video>
+    <video src="media/IMG_3605.MP4"></video>
 
-<video src="media/IMG_3607.MP4" autoplay loop muted playsinline></video>
+    <img src="media/IMG_3606.JPEG">
 
-<img src="media/IMG_3608.JPEG">
-<img src="media/IMG_3609.JPEG">
+    <video src="media/IMG_3607.MP4"></video>
+
+    <img src="media/IMG_3608.JPEG">
+    <img src="media/IMG_3609.JPEG">
+  </div>
+
   <script>
-  document.addEventListener('click', function playDrone() {
-    const audio = document.getElementById('drone');
-    audio.play().catch(err => console.log('Audio play blocked:', err));
-    document.removeEventListener('click', playDrone);
-  });
-</script>
+    // Play audio drone on first click
+    document.addEventListener('click', function playDrone() {
+      const audio = document.getElementById('drone');
+      audio.play().catch(err => console.log('Audio play blocked:', err));
+      document.removeEventListener('click', playDrone);
+    });
 
+    // INFINITE WALL: clone media multiple times
+    const wall = document.getElementById('media-wall');
+    const originals = [...wall.children];
+    const repeats = 20; // adjust to make wall longer
+
+    for (let i = 0; i < repeats; i++) {
+      originals.forEach(el => {
+        const clone = el.cloneNode(true);
+        wall.appendChild(clone);
+      });
+    }
+
+    // AUTO-SCROLL EFFECT
+    let scrollPos = 0;
+    function autoScroll() {
+      scrollPos += 0.5; // speed (px/frame)
+      window.scrollTo(0, scrollPos);
+      // loop back to top if bottom reached
+      if (scrollPos + window.innerHeight >= document.body.scrollHeight) {
+        scrollPos = 0;
+      }
+      requestAnimationFrame(autoScroll);
+    }
+    autoScroll();
+  </script>
 </body>
 </html>
